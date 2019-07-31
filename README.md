@@ -8,5 +8,5 @@ Requirements:
 
 Usuage:
 ```bash
-python2.7 fork.py examples/example1.lp
+python fork.py examples/example1.lp
 ```
