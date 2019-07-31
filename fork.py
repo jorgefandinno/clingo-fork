@@ -113,6 +113,19 @@ class AuxTransformer(Transformer):
         self.__visting_disjuntion = False
         return x
 
+    def visit_ConditionalLiteral(self, x, *args, **kwargs):
+        """
+        Make sure that conditions are traversed as non-head literals.
+        """
+        x.literal = self.visit(x.literal)
+        visting_rule_head = self.__visting_rule_head
+        try:
+            self.__visting_rule_head = False
+            x.condition = self.visit(x.condition)
+        finally:
+            self.__visting_rule_head = visting_rule_head
+        return x
+
     def visit_Literal(self, x, *args, **kwargs):
         if self.__visting_rule_head and self.__visting_disjuntion:
             return self.visit_Literal_in_Head_Disjuntion(x, *args, **kwargs)
